@@ -1,0 +1,53 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+
+driver = webdriver.Chrome()
+driver.maximize_window()
+driver.get('https://www.saucedemo.com/')
+
+def login (login, password):
+    # Fill in username and password
+    driver.find_element(By.ID, 'user-name').send_keys(login)
+    driver.find_element(By.ID, 'password').send_keys(password)
+
+    # Submit the login form
+    driver.find_element(By.ID, 'login-button').click()
+
+    # Verify the successful login
+    try:
+        driver.find_element(By.ID, 'react-burger-menu-btn')
+        print("Login successful")
+    except:
+        print("Login failed")
+
+def add_to_cart ():
+    # Add an item to the cart
+    driver.find_element(By.XPATH, "/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/button[1]").click()
+
+    # Check if the item is added to the cart
+    cart = driver.find_element(By.XPATH, "//span[@class='shopping_cart_badge']").text
+    if int(cart) > 0:
+        print("Item added successfully)"
+    else:
+        print("Failed to add the the item")
+
+def verify_checkout(name, surname, zip):
+    # Buy an item, navigate to the cart and go to checkout
+    driver.find_element(By.XPATH,"/html[1]/body[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/button[1]").click()
+    driver.find_element(By.CSS_SELECTOR, ".shopping_cart_link").click()
+    driver.find_element(By.ID, "checkout").click()
+
+    # Fill in the form and continue
+    driver.find_element(By.ID, "first-name").send_keys(name)
+    driver.find_element(By.ID, "last-name").send_keys(surname)
+    driver.find_element(By.ID, "postal-code").send_keys(zip)
+    driver.find_element(By.ID, "continue").click()
+
+    # Finish the checkout and verify that the order was placed
+    driver.find_element(By.ID, "finish").click()
+    message = driver.find_element(By.XPATH, "/html/body/div/div/div/div[2]/div").text
+    if message == "Your order has been dispatched, and will arrive just as fast as the pony can get there!":
+        print("Order placed successfully")
+    else:
+        print("Something went wrong while placing order")
