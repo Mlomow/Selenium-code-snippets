@@ -1,0 +1,19 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import random
+driver = webdriver.Chrome()
+driver.get('https://the-internet.herokuapp.com/add_remove_elements/')
+
+# Adding random numbers of buttons
+add = driver.find_element(By.XPATH, "/html[1]/body[1]/div[2]/div[1]/div[1]/button[1]")
+how_much_to_add = random.randrange(100)
+for i in range(1, how_much_to_add):
+    add.click()
+    i =+ 1
+
+# Counting the number of buttons added and deleting them 
+count  = len(driver.find_elements(By.CLASS_NAME,"added-manually"))
+for i in range(1, count):
+    driver.find_element(By.CSS_SELECTOR, "div[id='elements'] button:nth-child(1)").click()
+    driver.save_screenshot(f'screenie{i}.png')         # Here, I am checking if every step was done succesfully
+    i =+ 1
