@@ -1,0 +1,80 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+
+
+driver = webdriver.Chrome()
+driver.get("https://www.techlistic.com/p/selenium-practice-form.html")
+driver.maximize_window()
+
+
+# Click through the cookiewall
+cookie = driver.find_element(By.ID, "ez-accept-necessary")
+cookie.click()
+
+
+
+# Fill in the name and last name
+name = driver.find_element(By.NAME, "firstname")
+name.send_keys("Jan")
+
+last_name = driver.find_element(By.NAME, "lastname")
+last_name.send_keys("Kowalski")
+
+# Navigate down so the ad does not intercept the click
+body = driver.find_element(By.CSS_SELECTOR, "body")
+body.send_keys(Keys.PAGE_DOWN)
+
+# Fill in gender
+sex = driver.find_element(By.XPATH, "//input[@id='exp-2']")
+sex.click()
+
+# Fill in years of experience
+years_of_experience = driver.find_element(By.CSS_SELECTOR, "#exp-6")
+years_of_experience.click()
+
+# Fill in the date birth
+date = driver.find_element(By.ID, "datepicker")
+date.send_keys("01/01/2000")
+
+# Fill in the profession
+profession = driver.find_element(By.CSS_SELECTOR, "#profession-1")
+profession.click()
+
+# Choose known tools
+known_tools = driver.find_element(By.ID, "tool-0")
+known_tools2 = driver.find_element(By.ID, "tool-2")
+known_tools.click(), known_tools2.click()
+
+# Choose the continent you are from
+continent = Select(driver.find_element(By.ID, "continents"))
+continent.select_by_visible_text("Australia")
+
+# Choose known command
+commands = Select(driver.find_element(By.ID, "selenium_commands"))
+commands.select_by_visible_text("Browser Commands")
+commands.select_by_visible_text("WebElement Commands")
+
+# Upload a picture
+upload_button = driver.find_element(By.ID, "photo")
+file_path = "D:/picture.jpg"
+upload_button.send_keys(file_path)
+
+# Download a file
+download_link = driver.find_element(By.CSS_SELECTOR, "a[href='https://github.com/stanfy/behave-rest/blob/master/features/conf.yaml']")
+download_link.click()
+download_button = driver.find_element(By.XPATH, "//button[@aria-label='Download raw content']//*[name()='svg']")
+download_button.click()
+
+# Save screenshot to confirm that all field were filled correctly
+driver.save_screenshot("form.jpg")
+
+
+
+
+
+
+
+
+
